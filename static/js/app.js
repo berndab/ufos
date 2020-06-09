@@ -1,6 +1,27 @@
 // import the data from data.js
 const tableData = data;
 
+// Clean the data
+// Capitalize city name and multipart city names
+// States to upper case
+// Counties to upper case
+
+
+data.forEach((dataRow) => {
+
+    var cityName = "";
+
+    dataRow["city"].split(" ").forEach((cityNamePart) => {
+        if (cityName.length > 0){
+            cityName += " ";
+        }
+        cityName += cityNamePart.replace(/^[a-z]{1}/, cityNamePart.substring(0,1).toUpperCase());
+    });
+    dataRow["city"]    = cityName;
+    dataRow["state"]   = dataRow["state"].toUpperCase();
+    dataRow["country"] = dataRow["country"].toUpperCase();
+});
+
 
 // *********************************************
 // ******  Get unique field values   ***********
@@ -93,7 +114,7 @@ function populateSelectOptions(selectId, selectOptionData, format="none"){
     select.on("change", handleSelect);
 
     //populate select box with data
-    selectOptionData.forEach((value) => {select.append("option").attr("value", value).text(format.toLowerCase() === 'uppercase'?value.toUpperCase():format.toLowerCase() === 'capitalize'?value.replace(/^[a-z]{1}/, value.substring(0,1).toUpperCase()):value)});
+    selectOptionData.forEach((value) => {select.append("option").attr("value", value).text(value);});
 }
 
 function getSelectOptions(id) {
@@ -113,15 +134,16 @@ function getSelectOptions(id) {
 
 function clearSelectBoxes() {
 
-    let selectArray = d3.selectAll("select");
-    
+    let selection = d3.selectAll("select");
 
-    Object.values(selectArray).forEach((select) => 
+    Object.values(selection._groups).forEach((selectArray) => {
         // Find the select box by the id attribute
         // and interate through the select box options
         // setting selected to false
-        Object.values(select).property("options").forEach((option) => { option.selected = false})
-        );
+        selectArray.forEach((select) => { Object.values(select.options).forEach((option) => { option.selected = false;}) })
+    });
+
+    buildTable(tableData);
 }
 
 
@@ -166,8 +188,6 @@ function handleSelect() {
     let shapeArray    = getSelectOptions("shape");
 
     let filteredData = tableData;
-
-    console.log(stateArray);
 
     // Check to see if any select boxes have options selected
     if (datetimeArray.length + cityArray.length + stateArray.length + countryArray.length + shapeArray.length > 0) {
