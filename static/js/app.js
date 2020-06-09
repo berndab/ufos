@@ -85,7 +85,7 @@ Object.values(dataFieldValues).forEach((dataField) => {
 // *********************************************
 
 // Function to populate form select box options
-function populateSelectOptions(selectId, selectOptionData){
+function populateSelectOptions(selectId, selectOptionData, format="none"){
     
     // Get select boxselectOptionData
     var select = d3.select("#" + selectId)
@@ -93,7 +93,7 @@ function populateSelectOptions(selectId, selectOptionData){
     select.on("change", handleSelect);
 
     //populate select box with data
-    selectOptionData.forEach((value) => {select.append("option").attr("value", value).text(value)});
+    selectOptionData.forEach((value) => {select.append("option").attr("value", value).text(format.toLowerCase() === 'uppercase'?value.toUpperCase():format.toLowerCase() === 'capitalize'?value.replace(/^[a-z]{1}/, value.substring(0,1).toUpperCase()):value)});
 }
 
 function getSelectOptions(id) {
@@ -212,8 +212,8 @@ buildTable(tableData);
 // Populate form select controls used to filter the
 // data displayed in the table
 populateSelectOptions("datetime", dataFieldValues["datetime"]);
-populateSelectOptions("city",     dataFieldValues["city"]);
-populateSelectOptions("state",    dataFieldValues["state"]);
-populateSelectOptions("country",  dataFieldValues["country"]);
-populateSelectOptions("shape",    dataFieldValues["shape"]);
+populateSelectOptions("city",     dataFieldValues["city"], format="capitalize");
+populateSelectOptions("state",    dataFieldValues["state"], format="uppercase");
+populateSelectOptions("country",  dataFieldValues["country"], format="uppercase");
+populateSelectOptions("shape",    dataFieldValues["shape"], format="capitalize");
 
