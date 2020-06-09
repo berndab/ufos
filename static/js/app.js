@@ -1,6 +1,12 @@
 // import the data from data.js
 const tableData = data;
 
+
+// *********************************************
+// ******  Get unique field values   ***********
+// ****** from the data array object ***********
+// *********************************************
+
 // Create a data field values object that has
 // properties which contains sets collections.
 // Populating these data field set collections
@@ -72,9 +78,14 @@ Object.values(dataFieldValues).forEach((dataField) => {
     arrayToSort.forEach((value) => {dataField.add(value)});
 });
 
-// Function to populate the form select boxes
-// with sorted unique data field values
-function populateSelect(selectId, selectOptionData){
+
+// *********************************************
+// ******  Functions to Manage the   ***********
+// ******     Form Select Boxes      ***********
+// *********************************************
+
+// Function to populate form select box options
+function populateSelectOptions(selectId, selectOptionData){
     
     // Get select boxselectOptionData
     var select = d3.select("#" + selectId)
@@ -84,6 +95,40 @@ function populateSelect(selectId, selectOptionData){
     //populate select box with data
     selectOptionData.forEach((value) => {select.append("option").attr("value", value).text(value)});
 }
+
+function getSelectOptions(id) {
+
+    let optionArray = new Array();
+    
+    // Find the select box by the id attribute
+    // and interate through the select box options
+    // to get the values from the selected options
+    Object.values(d3.select("#" + id)
+    .property("options"))
+    .forEach((option) => { option.selected === true&option.value.length > 0?optionArray.push(option.value):'' });
+
+    return optionArray;
+}
+
+
+function clearSelectBoxes() {
+
+    let selectArray = d3.selectAll("select");
+    
+
+    Object.values(selectArray).forEach((select) => 
+        // Find the select box by the id attribute
+        // and interate through the select box options
+        // setting selected to false
+        Object.values(select).property("options").forEach((option) => { option.selected = false})
+        );
+}
+
+
+// *********************************************
+// ******  Functions to Manage the   ***********
+// ******  Data in the HTML Table    ***********
+// *********************************************
 
 
 // Reference the HTML table using d3
@@ -112,20 +157,6 @@ function buildTable(dataArray) {
 
 function handleSelect() {
 
-    function getSelectOptions(id) {
-
-        let optionArray = new Array();
-        
-        // Find the select box by the id attribute
-        // and interate through the select box options
-        // to get the values from the selected options
-        Object.values(d3.select("#" + id)
-        .property("options"))
-        .forEach((option) => { option.selected === true&option.value.length > 0?optionArray.push(option.value):'' });
-
-        return optionArray;
-    }
- 
     // Get the field filter values from the multiple
     // select boxes in the form
     let datetimeArray = getSelectOptions("datetime");
@@ -163,17 +194,26 @@ function handleSelect() {
     buildTable(filteredData);
 };
 
-// Attach an event to listen for the form button
-//d3.selectAll("#filter-btn").on("click", handleClick);
+
+
+
+
+// *********************************************
+// ******  Initialze the Webpage     ***********
+// *********************************************
+
+// Attach the clear select to the Clear button
+d3.selectAll("#clear-selected").on("click", clearSelectBoxes);
+
 
 // Build the table when the page loads
 buildTable(tableData);
 
 // Populate form select controls used to filter the
 // data displayed in the table
-populateSelect("datetime", dataFieldValues["datetime"]);
-populateSelect("city",     dataFieldValues["city"]);
-populateSelect("state",    dataFieldValues["state"]);
-populateSelect("country",  dataFieldValues["country"]);
-populateSelect("shape",    dataFieldValues["shape"]);
+populateSelectOptions("datetime", dataFieldValues["datetime"]);
+populateSelectOptions("city",     dataFieldValues["city"]);
+populateSelectOptions("state",    dataFieldValues["state"]);
+populateSelectOptions("country",  dataFieldValues["country"]);
+populateSelectOptions("shape",    dataFieldValues["shape"]);
 
