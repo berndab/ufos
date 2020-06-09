@@ -54,45 +54,47 @@
         </div>
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-3">
-                    <p>Filter Search</p>
-                    <form class="bg-dark">
+                <div class="col-md-2">
+                     <form class="bg-dark">
                         <ul class="list-group bg-dark">
                             <li class="list-group-item bg-dark">
-                                Control-Click to Unselect
-                                <button id="clear-selected" type="button" class="btn btn-dark">Clear Selected</button>
+                                <H4>Filter Search</h4>
+                                <button id="clear-selected" type="button" class="btn text-dark bg-light">Clear Selected</button>
+                            </li>
+                            <li class="list-group-item bg-dark" style="font-size:smaller;">
+                                Control-Click to Select Multiple Values
+                                <p>
+                                Control-Click to Unselect a Selected Value
                             </li>
                             <li class="list-group-item bg-dark">
-                                <li class="list-group-item bg-dark">
                                 <label for="datetime">Select City </label>
-                                <select id="datetime" multiple="true">
+                                <select class="custom-select text-white bg-dark" size="3" id="datetime" multiple="true">
                                 </select>
                             </li>
                             <li class="list-group-item bg-dark">
-                                <li class="list-group-item bg-dark">
                                 <label for="city">Select City </label>
-                                <select id="city" multiple="true">
+                                <select class="custom-select text-white bg-dark" size="3" id="city" multiple="true">
                                 </select>
                             </li>
                             <li class="list-group-item bg-dark">
                                 <label for="state">Select State </label>
-                                <select id="state" multiple="true">
+                                <select class="custom-select text-white bg-dark" size="3" id="state" multiple="true">
                                 </select>
                             </li>
                             <li class="list-group-item bg-dark">
                                 <label for="country">Select Country </label>
-                                <select id="country" multiple="true">
+                                <select class="custom-select text-white bg-dark" size="3" id="country" multiple="true">
                                 </select>
                             </li>
                             <li class="list-group-item bg-dark">
                                 <label for="shape">Select Shape </label>
-                                <select id="shape" multiple="true">
+                                <select class="custom-select text-white bg-dark" size="3" id="shape" multiple="true">
                                 </select>
                             </li>
                          </ul>
                     </form>
                 </div>          
-                <div class="col-md-9">
+                <div class="col-md-10">
                     <table class="table table-striped">
                         <thead>
                             <tr>
@@ -105,7 +107,7 @@
                                 <th>Comments</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody style="height:10px">
                         </tbody>
                     </table>
                 </div>
