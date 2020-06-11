@@ -83,19 +83,21 @@ Object.values(dataFieldValues).forEach((dataField) => {
         dateArrayToSort.sort();
 
         // Assign a new array object to the arrayToSort reference
+        // This array will hold converted string reprentation of the  
+        // of sorted milisecond date values
         arrayToSort = new Array(dateArrayToSort.length);
 
-        // Populate the arrayToSort array with a string representation
-        // of the sorted dates expressed in miliseconds
+        // Populate the arrayToSort array by converting to 
+        // a date string the sorted milisecond dates values
         dateArrayToSort.forEach((value) => { arrayToSort.push((new Date(value)).toLocaleDateString('en-US')) })
     };
 
     // Clear all values in 
-    // data field set object
+    // data field unique value set
     dataField.clear();
 
-    // Repopulate the data field set with the sorted values
-    // of the data field
+    // Repopulate the data field unique value 
+    // set with the sorted values 
     arrayToSort.forEach((value) => {dataField.add(value)});
 });
 
@@ -108,12 +110,15 @@ Object.values(dataFieldValues).forEach((dataField) => {
 // Function to populate form select box options
 function populateSelectOptions(selectId, selectOptionData, format="none"){
     
-    // Get select boxselectOptionData
+    // Get all select control by id
     var select = d3.select("#" + selectId)
 
-    select.on("change", handleSelect);
+    // Set the function to handle
+    // select control onChange events
+    select.on("change", selectOnChange);
 
-    //populate select box with data
+    //Add the option for the select control
+    //from the sorted unique value data field set
     selectOptionData.forEach((value) => {select.append("option").attr("value", value).text(value);});
 }
 
@@ -122,8 +127,7 @@ function getSelectOptions(id) {
     let optionArray = new Array();
     
     // Find the select box by the id attribute
-    // and interate through the select box options
-    // to get the values from the selected options
+    // and get the values from the selected options
     Object.values(d3.select("#" + id)
     .property("options"))
     .forEach((option) => { option.selected === true&option.value.length > 0?optionArray.push(option.value):'' });
@@ -132,14 +136,17 @@ function getSelectOptions(id) {
 }
 
 
+// Function to unset selected options
+// in the filter select controls
 function clearSelectBoxes() {
 
+    
     let selection = d3.selectAll("select");
 
     Object.values(selection._groups).forEach((selectArray) => {
         // Find the select box by the id attribute
         // and interate through the select box options
-        // setting selected to false
+        // setting selected property to false
         selectArray.forEach((select) => { Object.values(select.options).forEach((option) => { option.selected = false;}) })
     });
 
@@ -153,12 +160,12 @@ function clearSelectBoxes() {
 // *********************************************
 
 
-// Reference the HTML table using d3
+// Reference the data HTML table
 var tbody = d3.select("tbody");
 
 
-// Populate the HTML table rows with row values
-// in the data object
+// Populate the HTML table rows with filtered
+// row values in the dataArray  object
 function buildTable(dataArray) {
 
     // Clear the HTML table body tag
@@ -177,10 +184,13 @@ function buildTable(dataArray) {
     });
 };
 
-function handleSelect() {
+function selectOnChange() {
 
-    // Get the field filter values from the multiple
-    // select boxes in the form
+    // Get the selected option values from the select 
+    // filter controls with the multiselect property
+    // set to true.
+    // Store the selected options values for each select
+    // control and store them into an array
     let datetimeArray = getSelectOptions("datetime");
     let cityArray     = getSelectOptions("city");
     let stateArray    = getSelectOptions("state");
@@ -189,11 +199,11 @@ function handleSelect() {
 
     let filteredData = tableData;
 
-    // Check to see if any select boxes have options selected
+    // Check to see if any select controls have one or more options selected
     if (datetimeArray.length + cityArray.length + stateArray.length + countryArray.length + shapeArray.length > 0) {
  
-      // Filter the data in the data array with the options 
-      // selected in the filter form select boxes
+      // Filter the data in the data with the selected 
+      // option values for each filter select control
       filteredData = filteredData.filter((row) => 
       
         (datetimeArray.length === 0 | datetimeArray.includes(row.datetime))
@@ -222,18 +232,18 @@ function handleSelect() {
 // ******  Initialze the Webpage     ***********
 // *********************************************
 
-// Attach the clear select to the Clear button
-d3.selectAll("#clear-selected").on("click", clearSelectBoxes);
+// Attach the select controls clear selected option function
+// to the clear filter control
+d3.selectAll("#clear-filter").on("click", clearSelectBoxes);
 
 
 // Build the table when the page loads
 buildTable(tableData);
 
-// Populate form select controls used to filter the
-// data displayed in the table
+// Populate form filter select controls with 
+// the unique data values for each data field
 populateSelectOptions("datetime", dataFieldValues["datetime"]);
 populateSelectOptions("city",     dataFieldValues["city"], format="capitalize");
 populateSelectOptions("state",    dataFieldValues["state"], format="uppercase");
 populateSelectOptions("country",  dataFieldValues["country"], format="uppercase");
 populateSelectOptions("shape",    dataFieldValues["shape"], format="capitalize");
-
