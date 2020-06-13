@@ -10,7 +10,6 @@ const tableData = data;
 // Capitalize city name and multipart city names
 // States to upper case
 // Counties to upper case
-// using jscript for ... of ...
 for (dataRow of data ) {
 
     let cityName = "";
@@ -42,7 +41,6 @@ filterFieldValues = {
     shape:    new Set()
 };
 
-
 // Populate each field of the the filterFieldValues
 // object by interating through the data rows 
 // and data row field values of the tableData Object
@@ -62,7 +60,6 @@ tableData.forEach((dataRow) => {
     }
 
 });
-
 
 // ***** Sort the data field unique values  *****
 
@@ -114,17 +111,9 @@ for (dataFieldName in filterFieldValues) {
 
 
 // *********************************************
-// ******            END             ***********
-// ******         Table Data         ***********
-// ******       Cleaning Section     ***********
-// *********************************************
-
-
-// *********************************************
 // ******    Code to Manage the      ***********
 // ******  Filter Select Elements    ***********
 // *********************************************
-
 
 // This class stored the data field filter values
 // from each data field filter select control
@@ -214,15 +203,6 @@ function populateFilterSelects(optionValues, onChangeEventHandler) {
         // Append select options to the select object for each filter data field unique value
         selectOptionData.forEach((value) => {d3Select.append("option").attr("value", value).text(value)});
         
-        // Doing it the DOM way (Just having some fun.)
-        // selectOptionData.forEach((value) =>
-        // { 
-        //     let selectOption    = document.createElement("option");
-        //     selectOption.value  = value;
-        //     selectOption.text   = value;
-        //     select.add(selectOption);
-        // });
-        
     }
 }
 
@@ -260,7 +240,6 @@ function updateFilter() {
     
     let filterValues = new Array();
     
-    
     // Iterate throughoptions for the
     // changed filter data field select element
     // and select the option value where
@@ -283,7 +262,6 @@ function updateFilter() {
     // 
     // d3.event.target[index] returns undefined
     //
-    // I know this is strange. 
     
     let index = 0;
  
@@ -349,9 +327,6 @@ function filterTable(tableFilter) {
     // table will contain all the rows in thetableData object.
     buildTable(filteredData);
 };
-
-
-
 
 
 // *********************************************
