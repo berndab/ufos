@@ -10,7 +10,7 @@ const tableData = data;
 // Capitalize city name and multipart city names
 // States to upper case
 // Counties to upper case
-for (dataRow of data ) {
+for (const dataRow of data ) {
 
     let cityName = "";
     //capitalize all parts of a city's name
@@ -47,7 +47,7 @@ filterFieldValues = {
 tableData.forEach((dataRow) => {
 
     // For each column name in the data row
-    for ( columnName in dataRow ){
+    for ( const columnName in dataRow ){
 
         // If the object does not have a set property
         // "columnName" continue
@@ -69,9 +69,9 @@ let datetimeRegExp = new RegExp("\\d{1,2}/\\d{1,2}/\\d{4}")
 
 
 // Sort the each data field's unique data value
-for (dataFieldName in filterFieldValues) {
+for ( const fieldName in filterFieldValues) {
 
-    let dataFieldSet = filterFieldValues[dataFieldName];
+    let dataFieldSet = filterFieldValues[fieldName];
 
     let arrayToSort = Array.from(dataFieldSet).sort();
 
@@ -133,7 +133,7 @@ function populateFilterSelects(optionValues, onChangeEventHandler) {
     let selectOptionData;
     let d3Select;
 
-    for (select of selectelementArray){
+    for (const select of selectelementArray){
 
         // Get the data field's unique sorted field values
         selectOptionData = optionValues[select.id];
@@ -212,44 +212,48 @@ function buildTable(dataArray) {
 class TableFilter {
 
     constructor() {
-        // data field filter value arrays
-        this.datetime  = new Array();
-        this.city      = new Array();
-        this.state     = new Array();
-        this.country   = new Array();
-        this.shape     = new Array();
+
+        this.filterValueArrays = {
+            // data field filter value arrays
+            datetime  : new Array(),
+            city      : new Array(),
+            state     : new Array(),
+            country   : new Array(),
+            shape     : new Array()
+        };
     }
 
     // Method to test if a data objects field values match the filter values
-    filter(dataObject){ 
+    filter(tableRow){ 
 
-        if (this.datetime.length + this.city.length + this.state.length + this.country.length + this.shape.length === 0){
-            return true;
+        let isRowFiltered = true;
+
+        // Loop though fields in a table data row
+        for (const fieldName in tableRow) {
+            // If the data fields' filter value array has value and the 
+            // data rows's file value is not in the field's filter array
+            // filter the row
+            if (  this.filterValueArrays[fieldName] !== undefined && 
+                  this.filterValueArrays[fieldName].length > 0 && 
+                 !this.filterValueArrays[fieldName].includes(tableRow[fieldName]) )
+                return false;
         }
-
-        let datetimeFilter = (this.datetime.length === 0 || this.datetime.includes(dataObject.datetime));
-        let cityFilter     = (this.city.length === 0     || this.city.includes(dataObject.city));
-        let stateFilter    = (this.state.length === 0    || this.state.includes(dataObject.state));
-        let countryFilter  = (this.country.length === 0  || this.country.includes(dataObject.country));
-        let shapeFilter    = (this.shape.length === 0    || this.shape.includes(dataObject.shape));
         
-        let filterReturn   = datetimeFilter && cityFilter && stateFilter && countryFilter && shapeFilter;
-        
-        return filterReturn;
+        return true;
     }
 
     // Method to Set a data field's filter values
     setFilter(dataFieldName, filterDataArray){
-        this[dataFieldName] = filterDataArray;
+        this.filterValueArrays[dataFieldName] = filterDataArray;
     }
 
     // Method to clear all data field filter values
     clear(){
-        this.datetiime  = new Array();
-        this.city       = new Array();
-        this.state      = new Array();
-        this.country    = new Array();
-        this.shape      = new Array();
+        this.filterValueArrays.datetime  = new Array();
+        this.filterValueArrays.city      = new Array();
+        this.filterValueArrays.state     = new Array();
+        this.filterValueArrays.country   = new Array();
+        this.filterValueArrays.shape     = new Array();
     }
 }
 
