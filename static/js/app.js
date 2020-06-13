@@ -42,8 +42,8 @@ filterFieldValues = {
 };
 
 // Populate each field of the the filterFieldValues
-// object by interating through the data rows 
-// and data row field values of the tableData Object
+// object by iterating through the tableaData object's
+// data rows and row fields
 tableData.forEach((dataRow) => {
 
     // For each column name in the data row
@@ -68,7 +68,7 @@ tableData.forEach((dataRow) => {
 let datetimeRegExp = new RegExp("\\d{1,2}/\\d{1,2}/\\d{4}")
 
 
-// Sort the unique data value for each data field
+// Sort the each data field's unique data value
 for (dataFieldName in filterFieldValues) {
 
     let dataFieldSet = filterFieldValues[dataFieldName];
@@ -115,65 +115,7 @@ for (dataFieldName in filterFieldValues) {
 // ******  Filter Select Elements    ***********
 // *********************************************
 
-// This class stored the data field filter values
-// from each data field filter select control
-class UFOTableFilter {
-
-    constructor() {
-        // data field filter value arrays
-        this.datetime  = new Array();
-        this.city      = new Array();
-        this.state     = new Array();
-        this.country   = new Array();
-        this.shape     = new Array();
-    }
-
-    // Method to test if a data objects field values match the filter values
-    filter(dataObject){ 
-
-        if (this.isEmpty() === true){
-            return true;
-        }
-
-        let datetimeFilter = (this.datetime.length === 0 || this.datetime.includes(dataObject.datetime));
-
-        let cityFilter     = (this.city.length === 0 || this.city.includes(dataObject.city));
-
-        let stateFilter    = (this.state.length === 0 || this.state.includes(dataObject.state));
-
-        let countryFilter  = (this.country.length === 0 || this.country.includes(dataObject.country));
-
-        let shapeFilter    = (this.shape.length === 0 || this.shape.includes(dataObject.shape));
-
-        let filterReturn   = datetimeFilter && cityFilter && stateFilter && countryFilter && shapeFilter;
-        
-        return filterReturn;
-    }
-
-    // Method to Set a data field's filter values
-    setFilter(dataFieldName, filterDataArray){
-        this[dataFieldName] = filterDataArray;
-    }
-
-    // Methoc to clear all data field filter values
-    clear(){
-        this.datetiime  = new Array();
-        this.city       = new Array();
-        this.state      = new Array();
-        this.country    = new Array();
-        this.shape      = new Array();
-    }
-    
-    // Method to test if the filter contains any filter values
-    isEmpty() {
-        return this.datetime.length + this.city.length + this.state.length + this.country.length + this.shape.length === 0
-    }
-}
-
-// Create and instance of a UFOTableFilterObject
-let ufoTableFilter = new UFOTableFilter();
-
-// Function to populate the filter data field select elements
+// Function to populate the filter select elements
 function populateFilterSelects(optionValues, onChangeEventHandler) {
     
     // Get an d3 collection of all the filter select elements
@@ -207,8 +149,8 @@ function populateFilterSelects(optionValues, onChangeEventHandler) {
 }
 
 
-// function to clear the selected option of the
-// the filter data fields select elements
+// function that clears the selected option 
+// of the the filter select elements
 function clearFilterSelects() {
     
     // Get an array of all the filter data field select elements
@@ -234,23 +176,104 @@ function clearFilterSelects() {
     buildTable(tableData);
 }
 
-// function to attach to the onchange event
-// of the filter data fields select elements
+
+// *********************************************
+// ******       Code to Manage       ***********
+// ******   Table Data Filtering     ***********
+// *********************************************
+
+// Reference the data HTML table
+let tbody = d3.select("tbody");
+
+
+// Populate the HTML table rows with filtered
+// row values in the dataArray  object
+function buildTable(dataArray) {
+
+    // Clear the HTML table body tag
+    tbody.html("");
+
+    // Create a HTML table row for each data row
+    // in the data array object and populate the 
+    // columns with the data row field values;
+    dataArray.forEach((dataRow) => {
+        let row = tbody.append("tr");
+    
+        Object.values(dataRow).forEach((val) => {
+            let cell = row.append("td");
+            cell.text(val);
+        });
+    });
+};
+
+
+// This class stores the data field filter values
+// from each filter select control element
+class TableFilter {
+
+    constructor() {
+        // data field filter value arrays
+        this.datetime  = new Array();
+        this.city      = new Array();
+        this.state     = new Array();
+        this.country   = new Array();
+        this.shape     = new Array();
+    }
+
+    // Method to test if a data objects field values match the filter values
+    filter(dataObject){ 
+
+        if (this.datetime.length + this.city.length + this.state.length + this.country.length + this.shape.length === 0){
+            return true;
+        }
+
+        let datetimeFilter = (this.datetime.length === 0 || this.datetime.includes(dataObject.datetime));
+        let cityFilter     = (this.city.length === 0     || this.city.includes(dataObject.city));
+        let stateFilter    = (this.state.length === 0    || this.state.includes(dataObject.state));
+        let countryFilter  = (this.country.length === 0  || this.country.includes(dataObject.country));
+        let shapeFilter    = (this.shape.length === 0    || this.shape.includes(dataObject.shape));
+        
+        let filterReturn   = datetimeFilter && cityFilter && stateFilter && countryFilter && shapeFilter;
+        
+        return filterReturn;
+    }
+
+    // Method to Set a data field's filter values
+    setFilter(dataFieldName, filterDataArray){
+        this[dataFieldName] = filterDataArray;
+    }
+
+    // Method to clear all data field filter values
+    clear(){
+        this.datetiime  = new Array();
+        this.city       = new Array();
+        this.state      = new Array();
+        this.country    = new Array();
+        this.shape      = new Array();
+    }
+}
+
+
+// Create and instance of a table filter object
+let ufoTableFilter = new TableFilter();
+
+
+// Filter select elements' on change event handler function
 function updateFilter() {
     
     let filterValues = new Array();
     
-    // Iterate throughoptions for the
-    // changed filter data field select element
+    // Iterate through options for the
+    // changed filter select element
     // and select the option value where
     // the option property selected=true.
     //
     // NOTE:
-    // d3 attached each selected option element
+    // d3 attaches each selected option element
     // to the d3.event.target object with an 
     // integer property name instead of using
     // a single property that contains an array
-    // of the selected option.
+    // of the selecte option.
     //
     // d3.event.target.0 = selectedOption_0
     // d3.event.target.1 = selectedOption_1
@@ -286,34 +309,8 @@ function updateFilter() {
 }
 
 
-
-// Reference the data HTML table
-let tbody = d3.select("tbody");
-
-
-// Populate the HTML table rows with filtered
-// row values in the dataArray  object
-function buildTable(dataArray) {
-
-    // Clear the HTML table body tag
-    tbody.html("");
-
-    // Create a HTML table row for each data row
-    // in the data array object and populate the 
-    // columns with the data row field values;
-    dataArray.forEach((dataRow) => {
-        let row = tbody.append("tr");
-    
-        Object.values(dataRow).forEach((val) => {
-            let cell = row.append("td");
-            cell.text(val);
-        });
-    });
-};
-
-// Funtion to filter the tableData
-// based on the the filter's 
-// data fields filter values
+// Funtion to filter the tableData based 
+//on the the filter's  data fields filter values
 function filterTable(tableFilter) {
 
     // Create copy of tableData
