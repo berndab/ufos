@@ -12,8 +12,9 @@ const tableData = data;
 // Counties to upper case
 // using jscript for ... of ...
 for (dataRow of data ) {
-    var cityName = "";
 
+    let cityName = "";
+    //capitalize all parts of a city's name
     dataRow["city"].split(" ").forEach((cityNamePart) => {
         if (cityName.length > 0){
             cityName += " ";
@@ -21,6 +22,8 @@ for (dataRow of data ) {
         cityName += cityNamePart.replace(/^[a-z]{1}/, cityNamePart.substring(0,1).toUpperCase());
     });
     dataRow["city"]    = cityName;
+    
+    // Change the stte and county codes to upper case
     dataRow["state"]   = dataRow["state"].toUpperCase();
     dataRow["country"] = dataRow["country"].toUpperCase();
 };
@@ -29,17 +32,9 @@ for (dataRow of data ) {
 // ***** Get a unique set of value for each  *****
 // ***** data field used to filter data rows *****
 
-// Createa a data field unique sorted values object
-// This object will contain the unique sorted values
-// for each data field used to filter data rows.
-
-// A javascript set objects is used to hold a data field's
-// unique values. The set object itself will create the 
-// the data field's unique value list. A set object will  
-// only retain value once. If the same value is added to 
-// the set multiple time, the set object will only keep
-// the first instance of the value. 
-uniqSortFldVals = {
+// Creates an object that stores the unique sorted values
+// of the data field used to filter the rows of the table.
+filterFieldValues = {
     datetime: new Set(),
     city:     new Set(),
     state:    new Set(),
@@ -48,82 +43,73 @@ uniqSortFldVals = {
 };
 
 
-// Populate the uniqSortFldVals object with 
-// table data from the tableData object
+// Populate each field of the the filterFieldValues
+// object by interating through the data rows 
+// and data row field values of the tableData Object
 tableData.forEach((dataRow) => {
 
     // For each column name in the data row
-    // Using the javascript statement for ... in ...
     for ( columnName in dataRow ){
 
-        // If uniqSortFldVals does not have the property
-        // with a name equal to the columnName value
-        // continue.
-        if (uniqSortFldVals[columnName] === undefined){
+        // If the object does not have a set property
+        // "columnName" continue
+        if (filterFieldValues[columnName] === undefined){
             continue;
         }
 
-        // Add value of the field to the uniqSortFldVals
-        // property whose name is equal to the columnName value
-        uniqSortFldVals[columnName].add(dataRow[columnName]);
+        // Add the field value to the set property "columnName"
+        filterFieldValues[columnName].add(dataRow[columnName]);
     }
 
 });
 
 
-// ***** Sort unique set of value for each   *****
-// ***** data field used to filter data rows *****
+// ***** Sort the data field unique values  *****
 
-// Date mm/dd/yyyy regular expression
-// which is used to determine if the data field
-// values being sorted below are string date values
-var datetimeRegExp = new RegExp("\\d{1,2}/\\d{1,2}/\\d{4}")
+// The date mm/dd/yyyy regular expression is used to 
+// determine if the data field contains a date value
+let datetimeRegExp = new RegExp("\\d{1,2}/\\d{1,2}/\\d{4}")
 
 
 // Sort the unique data value for each data field
-for (dataFieldName in uniqSortFldVals) {
+for (dataFieldName in filterFieldValues) {
 
-    let dataFldUnqValSet = uniqSortFldVals[dataFieldName];
+    let dataFieldSet = filterFieldValues[dataFieldName];
 
-    var arrayToSort = Array.from(dataFldUnqValSet).sort();
+    let arrayToSort = Array.from(dataFieldSet).sort();
 
-    // Test to see if the array contains date string
-    // Date strings must be sorted using a custome
-    // sort algorithm since date strings sort by charcter
-    // not date value. 
+    // Test to see if the array contains date strings
+    // Date strings cannot be sorted using array sort method
     // Example of the erroneous sort of date strings:
     //   1/1/2020
     //   1/10/2020
     //   1/2/2020
     if (datetimeRegExp.test(arrayToSort[0]) === true){
-        // Create new array to hold the milisecond value
-        // for the date string from the Date.parse() method
-        var dateArrayToSort = new Array(arrayToSort.length);
+        
+        // Create new array to hold the milisecond value 
+        // conversion of each date string
+        let dateArrayToSort = new Array(arrayToSort.length);
 
-        // Poulate the dateArrayToSort array with milisecond values for
-        // the date represented by the date string
+        // Poulate the dateArrayToSort with milisecond value
+        // conversion of each date string
         arrayToSort.forEach((value) => { dateArrayToSort.push(Date.parse(value)) });
         
-        // Sort the milisecond values
+        // Sort the date milisecond values
         dateArrayToSort.sort();
 
-        // Assign a new array object to the arrayToSort reference
-        // This array will hold converted string reprentation of the  
-        // of sorted milisecond date values
+        // Assign arrayToSort reference to a new array
         arrayToSort = new Array(dateArrayToSort.length);
 
-        // Populate the arrayToSort array by converting to 
-        // a date string the sorted milisecond dates values
+        // Populate the arrayToSort array by converting the sorted  
+        // milizsecond value date to date string equivalents
         dateArrayToSort.forEach((value) => { arrayToSort.push((new Date(value)).toLocaleDateString('en-US')) })
     };
 
-    // Clear all values in  
-    //data field unique value set
-    dataFldUnqValSet.clear();
+    // Clear the data field value set
+    dataFieldSet.clear();
 
-    // Repopulate the data field unique value 
-    // set with the values in sorted order 
-    arrayToSort.forEach((value) => {dataFldUnqValSet.add(value)});
+    // Repopulate the data field value set with the sorted field values
+    arrayToSort.forEach((value) => {dataFieldSet.add(value)});
 };
 
 
@@ -139,9 +125,13 @@ for (dataFieldName in uniqSortFldVals) {
 // ******  Filter Select Elements    ***********
 // *********************************************
 
+
+// This class stored the data field filter values
+// from each data field filter select control
 class UFOTableFilter {
 
     constructor() {
+        // data field filter value arrays
         this.datetime  = new Array();
         this.city      = new Array();
         this.state     = new Array();
@@ -149,6 +139,7 @@ class UFOTableFilter {
         this.shape     = new Array();
     }
 
+    // Method to test if a data objects field values match the filter values
     filter(dataObject){ 
 
         if (this.isEmpty() === true){
@@ -170,10 +161,12 @@ class UFOTableFilter {
         return filterReturn;
     }
 
+    // Method to Set a data field's filter values
     setFilter(dataFieldName, filterDataArray){
         this[dataFieldName] = filterDataArray;
     }
 
+    // Methoc to clear all data field filter values
     clear(){
         this.datetiime  = new Array();
         this.city       = new Array();
@@ -181,7 +174,8 @@ class UFOTableFilter {
         this.country    = new Array();
         this.shape      = new Array();
     }
- 
+    
+    // Method to test if the filter contains any filter values
     isEmpty() {
         return this.datetime.length + this.city.length + this.state.length + this.country.length + this.shape.length === 0
     }
@@ -190,35 +184,37 @@ class UFOTableFilter {
 // Create and instance of a UFOTableFilterObject
 let ufoTableFilter = new UFOTableFilter();
 
-// Function to populate all filter select element
+// Function to populate the filter data field select elements
 function populateFilterSelects(optionValues, onChangeEventHandler) {
     
-    // Get an array of all the filter select elements
+    // Get an d3 collection of all the filter select elements
     let d3SelectCollection = d3.selectAll("select");
 
-    // Set the onchange event handler for all filter select elements
+    // Set the onchange event handler for all select elements in the d3 collection
     d3SelectCollection.on("change", onChangeEventHandler);
 
+    
+    // Get an array of the filter select javascript objects
     let selectelementArray = d3SelectCollection._groups[0]
 
-    // Interate through each select element's option objects
-    // and set the option object's selected property to false
-
+    // Populate the select options of  data 
+    // field's HTML javascript select element
     let selectOptionData;
     let d3Select;
 
     for (select of selectelementArray){
 
-        // Get the unique sorted field data to 
-        // populate the filter select element
+        // Get the data field's unique sorted field values
         selectOptionData = optionValues[select.id];
         
         // Doing it using d3 way
+        // Get the d3 select control object
         d3Select = d3.select("#" + select.id);
 
+        // Append select options to the select object for each filter data field unique value
         selectOptionData.forEach((value) => {d3Select.append("option").attr("value", value).text(value)});
         
-        // Doing it the DOM way (Just having some fun. Use to be front end developer years ago.)
+        // Doing it the DOM way (Just having some fun.)
         // selectOptionData.forEach((value) =>
         // { 
         //     let selectOption    = document.createElement("option");
@@ -231,10 +227,11 @@ function populateFilterSelects(optionValues, onChangeEventHandler) {
 }
 
 
-// function to clear the filter select elements
+// function to clear the selected option of the
+// the filter data fields select elements
 function clearFilterSelects() {
     
-    // Get an array of all the filter select elements
+    // Get an array of all the filter data field select elements
     let selectelementArray = d3.selectAll("select")._groups[0];
 
     // Interate through each select element's option objects
@@ -248,23 +245,54 @@ function clearFilterSelects() {
         }
     );
 
+    // Clear all filter values
+    // from the filter object
     ufoTableFilter.clear();
 
-    // The filter has been cleared.
-    // Populate the table with all data.
+    // Rebult the HTML table with
+    // unfiltered tableData
     buildTable(tableData);
 }
 
+// function to attach to the onchange event
+// of the filter data fields select elements
 function updateFilter() {
     
     let filterValues = new Array();
     
-    let index = 0;
     
+    // Iterate throughoptions for the
+    // changed filter data field select element
+    // and select the option value where
+    // the option property selected=true.
+    //
+    // NOTE:
+    // d3 attached each selected option element
+    // to the d3.event.target object with an 
+    // integer property name instead of using
+    // a single property that contains an array
+    // of the selected option.
+    //
+    // d3.event.target.0 = selectedOption_0
+    // d3.event.target.1 = selectedOption_1
+    // ...
+    // d3.event.target.n = selectedOption_n
+    //
+    // An integer index is needed to use as a
+    // option property name until
+    // 
+    // d3.event.target[index] returns undefined
+    //
+    // I know this is strange. 
+    
+    let index = 0;
+ 
     let selectOption = d3.event.target[index];
     
     while(selectOption != undefined){
 
+        // Store the value of the option in the array
+        // if the option property selected=true
         if (selectOption.selected === true){
             filterValues.push(selectOption.value);
         }
@@ -272,6 +300,8 @@ function updateFilter() {
         selectOption = d3.event.target[++index];
     }
     
+    // Set the filter values for data field that is equal the 
+    // the filter select elements id
     ufoTableFilter.setFilter(d3.event.target.id, filterValues);
 
     filterTable();
@@ -280,7 +310,7 @@ function updateFilter() {
 
 
 // Reference the data HTML table
-var tbody = d3.select("tbody");
+let tbody = d3.select("tbody");
 
 
 // Populate the HTML table rows with filtered
@@ -303,6 +333,9 @@ function buildTable(dataArray) {
     });
 };
 
+// Funtion to filter the tableData
+// based on the the filter's 
+// data fields filter values
 function filterTable(tableFilter) {
 
     // Create copy of tableData
@@ -325,14 +358,16 @@ function filterTable(tableFilter) {
 // ******  Initialze the Webpage     ***********
 // *********************************************
 
-// Attach the select elements clear selected option function
-// to the clear filter element
+// Attach the filter clear function to the 
+// clear filter button
 d3.selectAll("#clear-filter").on("click", clearFilterSelects);
 
 
-// Build the table when the page loads
+// Build the html table displaying all rows
 buildTable(tableData);
 
-// Populate form filter select elements with 
-// the unique data values for each data field
-populateFilterSelects(uniqSortFldVals, updateFilter); 
+// Populate filter data field select elements with 
+// the data field unique data values and add the 
+// attach the updateFilter function to the 
+// filter data field select elements.
+populateFilterSelects(filterFieldValues, updateFilter); 
