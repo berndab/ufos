@@ -228,7 +228,15 @@ class TableFilter {
 
         let isRowFiltered = true;
 
-        // Loop though fields in a table data row
+        // Loop though fields in a table data row and compare
+        // the field values match the field's filter values
+        // 
+        // Using for ... in ... to loop through the filter values is 
+        // more efficient than using object.forEach() to loop.
+        // Once a data field value does not match any filter value,
+        // the row is filtered and the filter method can return false.
+        // There is no need to test any addition field values agains 
+        // their filter values. 
         for (const fieldName in tableRow) {
             // If the data fields' filter value array has value and the 
             // data rows's file value is not in the field's filter array
