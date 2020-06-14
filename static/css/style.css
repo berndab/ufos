@@ -7,3 +7,72 @@ body {
     background-size: 100% 100%;
     text-align: center;
 }
+
+.datetime-column {width:125px;}
+.city-column {width:125px;}
+.state-column {width:100px;}
+.country-column {width:90px;}
+.shape-column {width:90px;}
+.durationMinutes-column {width:200px;}
+.comments-column{width:auto}
+
+.fixed-header tbody{
+    display:block;
+    overflow-y:scroll;
+    height:340px;
+}
+
+.fixed-header thead tr{
+    display:block;
+}
+
+
+#datetime {
+    width:120px;
+}
+#city {
+    width:200px
+}
+
+#state {
+    width:65px;
+}
+
+#country {
+    width:65px;
+}
+
+#shape {
+    width:115px;
+}
+
+form div {
+    display:inline-block;
+    align-content: center;
+    padding-left: 10px;
+    padding-right:10px;
+    font-size: medium;
+    text-align: center;
+}
+
+
+[id*="article-vis-"]{
+    -webkit-user-select: none;  
+    -moz-user-select: none;    
+    -ms-user-select: none;      
+    user-select: none;
+}
+[id*="article-vis-"]:hover {
+    background-color: white;
+    color: darkgrey;
+}
+
+#navy-ufo-link {
+    color:white;
+    text-decoration: underline;
+}
+
+#navy-ufo-link:hover {
+    color:darkgray;
+    background-color: white;
+}

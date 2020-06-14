@@ -167,6 +167,7 @@ function clearFilterSelects() {
         }
     );
 
+
     // Clear all filter values
     // from the filter object
     ufoTableFilter.clear();
@@ -176,6 +177,29 @@ function clearFilterSelects() {
     buildTable(tableData);
 }
 
+// *********************************************
+// ******       Code to Manage       ***********
+// ******   Table Data Filtering     ***********
+// *********************************************
+let spanArticleVisShow = d3.select("#article-vis-show")
+let spanArticleVisHide = d3.select("#article-vis-hide")
+let divArticleSections   = d3.selectAll(".article-section")
+
+function articleToggleVisible(){
+    let show = true;
+
+    if (d3.event.target.id === "article-vis-hide") {
+        show = false;
+    }
+
+    divArticleSections.style("display", show?"block":"none");
+    spanArticleVisShow.style("display", !show?"inline":"none");
+    spanArticleVisHide.style("display", show?"inline":"none");
+
+}
+
+spanArticleVisShow .on("click", articleToggleVisible);
+spanArticleVisHide.on("click", articleToggleVisible);
 
 // *********************************************
 // ******       Code to Manage       ***********
@@ -199,10 +223,11 @@ function buildTable(dataArray) {
     dataArray.forEach((dataRow) => {
         let row = tbody.append("tr");
     
-        Object.values(dataRow).forEach((val) => {
+        for (fieldName in dataRow){
             let cell = row.append("td");
-            cell.text(val);
-        });
+            cell.text(dataRow[fieldName]);
+            cell.attr("class", fieldName + "-column");
+        };
     });
 };
 
@@ -354,4 +379,4 @@ buildTable(tableData);
 // the data field unique data values and add the 
 // attach the updateFilter function to the 
 // filter data field select elements.
-populateFilterSelects(filterFieldValues, updateFilter); 
+populateFilterSelects(filterFieldValues, updateFilter);

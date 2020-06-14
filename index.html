@@ -14,18 +14,36 @@
 </head>
 <body class="bg-dark">
 	<div class="wrapper">
-        <nav class="navbar navbar-dark bg-dark navbar-expand-lg">
+        <nav class="navbar navbar-dark bg-dark navbar-expand-lg article-section">
             <a class="navbar-brand" href="index.html">UFO Sightings</a>
         </nav>
-        <div class="jumbotron">
+        <div class="jumbotron article-section">
             <h1 class="display-4">The Truth Is Out There</h1>
         </div>
         <div class="container-fluid">
+            <div>
+                <span                      id="article-vis-hide">&#11205; Hide</span>
+                <span style="display:none" id="article-vis-show">&#11206; Show</span>
+            </div>
+            <br/>
             <div class="row">
-                <div class="col-md-4">
-                    <h3>UFO Sightings: Fact or Fancy? <small>Ufologists Weigh In</small></h3>
+                <div class="col-md-4 article-section">
+                    <h5>UFO Sightings: Fact or Fancy? <br/><small>Ufologists Weigh In</small></h5>
+                    <div>
+                        <iframe width="450" height="250" src="https://www.youtube.com/embed/2TumprpOwHY" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <div>
+                        The San Diago Union
+                        <br/>
+                        <a id="navy-ufo-link" 
+                        href="https://www.sandiegouniontribune.com/news/military/story/2020-04-27/pentagon-formally-releases-navy-ufo-videos"
+                        target="_blank"
+                        >
+                        Pentagon formally releases Navy UFO videos
+                        </a>
+                    </div>
                 </div>
-                <div class="col-md-8">
+                <div class="col-md-8 article-section">
                     Are we alone in the universe? For millennia, humans have turned to the sky to answer this 
                     question. Now, thanks to research generously funded by W. Avy, a UFO-enthusiast and amateur 
                     ufologist, we can supplement our sky-searching with data analysis.
@@ -51,66 +69,77 @@
                     <br/>
                 </div>      
             </div>
-        </div>
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-2">
-                     <form class="bg-dark">
-                        <ul class="list-group bg-dark">
-                            <li class="list-group-item bg-dark">
-                                <H4>Filter Search</h4>
-                                <br/>
-                                <button id="clear-filter" type="button" class="btn text-dark bg-light">Clear Filter</button>
-                            </li>
-                            <li class="list-group-item bg-dark" style="font-size:smaller;">
+            <br class="article-section"/>
+            <div class="row justify-content-center">
+                <div class="col-md-10 filter-header">
+                    <h1 class="h2" style="text-align: center;">UFO Data</h1>
+                </div>
+            </div>
+            <br/>
+            <div class="row justify-content-center">
+                <div class="col-md-9">
+                    <form>
+                        <div>
+                            <button id="clear-filter" type="button" class="btn text-dark bg-light">Clear Filter</button>
+                        </div>  
+                        <div>
+                            <p style="font-size: small;">
                                 Control-Click to:
                                 <br/>
-                                Select Multiple Values
-                                <br>
-                                Unselect a Selected Value
-                            </li>
-                            <li class="list-group-item bg-dark">
-                                <label for="datetime">Select Dates </label>
-                                <select class="custom-select text-white bg-dark" size="3" id="datetime" multiple="true">
-                                </select>
-                            </li>
-                            <li class="list-group-item bg-dark">
-                                <label for="city">Select Cities </label>
-                                <select class="custom-select text-white bg-dark" size="3" id="city" multiple="true">
-                                </select>
-                            </li>
-                            <li class="list-group-item bg-dark">
-                                <label for="state">Select States </label>
-                                <select class="custom-select text-white bg-dark" size="3" id="state" multiple="true">
-                                </select>
-                            </li>
-                            <li class="list-group-item bg-dark">
-                                <label for="country">Select Countries </label>
-                                <select class="custom-select text-white bg-dark" size="3" id="country" multiple="true">
-                                </select>
-                            </li>
-                            <li class="list-group-item bg-dark">
-                                <label for="shape">Select Shapes </label>
-                                <select class="custom-select text-white bg-dark" size="3" id="shape" multiple="true">
-                                </select>
-                            </li>
-                         </ul>
+                                Select Multiple Items
+                                <br/>
+                                Unselect an Items
+                            </p>       
+                        </div>
+                         <div>
+                            <label for="datetime">Select Dates </label>
+                            <br/>
+                            <select class="custom-select text-white bg-dark" size="3" id="datetime" multiple="true">
+                            </select>
+                        </div>
+                        <div>
+                            <label for="city">Select Cities </label>
+                            <br/>
+                            <select class="custom-select text-white bg-dark" size="3" id="city" multiple="true">
+                            </select>
+                        </div>
+                        <div>
+                            <label for="state">Select States </label>
+                            <br/>
+                            <select class="custom-select text-white bg-dark" size="3" id="state" multiple="true">
+                            </select>
+                        </div>
+                        <div>
+                            <label for="country">Select Countries </label>
+                            <br/>
+                            <select class="custom-select text-white bg-dark" size="3" id="country" multiple="true">
+                            </select>
+                        </div>
+                        <div>
+                            <label for="shape">Select Shapes </label>
+                            <br/>
+                            <select class="custom-select text-white bg-dark" size="3" id="shape" multiple="true">
+                            </select>
+                        </div>
                     </form>
-                </div>          
-                <div class="col-md-10">
-                    <table class="table table-striped">
+                </div>
+            </div>
+            <br/>
+            <div class="row justify-content-center">  
+                <div class="col-md-11">
+                    <table class="table table-striped fixed-header">
                         <thead>
                             <tr>
-                                <th>Date</th>
-                                <th>City</th>
-                                <th>State</th>
-                                <th>Country</th>
-                                <th>Shape</th>
-                                <th>Duration</th>
-                                <th>Comments</th>
+                                <th class="datetime-column">Date</th>
+                                <th class="city-column">City</th>
+                                <th class="state-column">State</th>
+                                <th class="country-column">Country</th>
+                                <th class="shape-column">Shape</th>
+                                <th class="durationMinutes-column">Duration</th>
+                                <th style="width:625px">Comments</th>
                             </tr>
                         </thead>
-                        <tbody style="height:10px">
+                        <tbody>
                         </tbody>
                     </table>
                 </div>
@@ -120,5 +149,5 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.11.0/d3.js"></script>
     <script id="jscript-file-data" src="static/js/data.js"></script>
     <script id="jscript-file-app" src="static/js/app.js"></script>
- </body>
+</body>
 </html>
