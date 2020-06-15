@@ -1,4 +1,4 @@
 # ufos
 
 
-[UFO Data Query Page](https://htmlpreview.github.io/?https://github.com/berndab/ufos/blob/master/index.html)
+<a href="https://berndab.github.io/ufos">UFOs Finder(ctrl-click to open in a new tab</a>
