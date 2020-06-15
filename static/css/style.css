@@ -61,6 +61,7 @@ form div {
     -moz-user-select: none;    
     -ms-user-select: none;      
     user-select: none;
+    font-size: large;
 }
 [id*="article-vis-"]:hover {
     background-color: white;
@@ -75,4 +76,12 @@ form div {
 #navy-ufo-link:hover {
     color:darkgray;
     background-color: white;
+}
+
+.form-inst-text {
+    font-size: small;
+}
+
+.data-table-comments {
+    width:625px;
 }
