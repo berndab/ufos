@@ -26,26 +26,6 @@ body {
     display:block;
 }
 
-
-#datetime {
-    width:120px;
-}
-#city {
-    width:200px
-}
-
-#state {
-    width:65px;
-}
-
-#country {
-    width:65px;
-}
-
-#shape {
-    width:115px;
-}
-
 form div {
     display:inline-block;
     align-content: center;
