@@ -18,35 +18,45 @@ This project use the following web technologies
 * [d3 Javascript API 5.0](https://d3js.org/)
 
 ### Webpage HTML Design
-The UFO Finder webpage uses the Bootstrap [Grid](https://getbootstrap.com/docs/4.5/layout/grid/) system to organize the page. In addition the webpage used the Bootstrap Utility [Colors](https://getbootstrap.com/docs/4.5/utilities/colors/) CSS to style the pages components, text, and background color scheme. The display heading of the page uses the Bootstrap [Jumbotron](https://getbootstrap.com/docs/4.5/components/jumbotron/) component and uses a CSS class selector and CSS background-image property to display the background image of the Jumbotron component. In addition the webpage uses a Bootstrap [Table](https://getbootstrap.com/docs/4.5/content/tables/) component and additional CSS classes to style the UFO data filterable table to make it a scrollable table. Given that it is filterable, depending on what UFO data rows are selected by the filter, the field widths vary. In order to maintain fixed widths for each field CSS class were created to give each field the width of the longest string value for that field. To make the table more readable a CSS class was created to make the table header stationary, fixed-header tbody, and a CSS class was created to make the table rows scrollable, fixed-header tbody. To make the table body scrollable, the CSS class set a fixed height for the table body and the overflow-y property was set to scroll. The height of the table body was set to that it would fit in the browser window when the browser was maximized. Because of the fixed header of the UFO data table and the scrollable body of the table, the UFO data filter controls were located above the table headers so that the table could be be displayed with the maximum horizontal width. With all the content on the page, the user may be able to better analyze the information in the table if it could be viewed by itself. A control was create using a HTML span that allow the user to view the table by itself on the page. The display control show the option, "Display Data Only", when clicked all content on the page is hidden except the table and the filter controls. The display control is also change to display the option "Display All". When clicked, the hidden content of the page become visible again. This was accomplished by added a class to the div sections to be hidden called "article-section". WHen the "Display Data Only" section is clicked, the JavaScript function assigned to the on click event, sets the CSS display property to none. When the "Display All" option is visible and clicked, the on click Javascript function set the display CSS property of the div with the article-section class to block which allow those section to become visible again.
+The UFO Finder webpage following Bootstrap CSS framework to render the webpage’s HTML.
 
-Additional content was added to the page to enhance the UFO credibility of the information that is presented in the webpage. A YouTube video was added to the page. The video was recorded on Nov. 14, 2004 by a US Navy F18 Hornet plane operating off the aircraft carrier Nimitz off the coast of San Diego. It is a cockpit video of a F18 following a UFO. The recording shows the object seeming maneuvering in a manner not consistent with the capability of any known aircraft. Also, under the YouTube video, is a link to a The San Diego Union paper article about the video. This is the best evidence yet from one of the most credible sources that ... we are not alone. the truth is out there!
+* A Bootstrap Grid system to organize the page. 
+* A Bootstrap Utility CSS Colors  are used to style the pages the pages color scheme. 
+* A Bootstrap Jumbotron component is used for the heading of the page and a CSS class selector is used to stet the CSS background-image property of the Jumbotron component. 
+* A  Bootstrap Table component is used to display the UFO data
+* Additional CSS classes to style the UFO table to make it a scrollable.
+* The UFO data is filterable. When filtered data is displayed  in the table, the column widths may change because the maximum with of a data field displayed may change because other data field values are excluded by the filter. CSS classes were created to give each field, the width of the largest string value for that field. These CSS class keep the table column widths constant
+* A CSS class was created to make the table header stationary to make the data more readable
+* A CSS class was created to make the table rows scrollable. To make the table rows scrollable, the CSS class set a fixed height for the table body and set the CSS overflow-y property to scroll. The height of the table body was set so that it would fit in the browser window when the browser was maximized.
 
-## Data Cleaning 
-The UFO data is provided by a Javascript file that contains an array of data object with the following fields. 
-* Date
-* City
-* State
-* Country
-* Shape
-* Duration
-* Comments
 
-The City, State, and Country fields are all lower case. Because of this, the data is iterated through and cleaned when loaded into the webpage's main JavaScript file app.js. The City name commponents are all capitalized and the State and Country field value are converted to upper case
+With all the content on the page, the user may be able to better analyze the information in the table if it could be viewed by itself. A control was create using a HTML span that allows the user to hide all the content of the page except the UFO data table. When the display control "Display Data Only" is visible and clicked all content on the page except the table is hidden. When the display control "Display All is visible and is click all the hidden content on the page is made visible". This is accomplished by toggling the CSS Display property. To hide object on the page the display property is  set to none. To make these object visible again the display property of the object is set to either block or inline depending on the object
 
-## Data Filtering Using Javascript
+A YouTube video and a link to a newspaper article was added to the page to add credibility of the original information presented in the webpage. The video was recorded on Nov. 14, 2004 by a US Navy F-18 Hornet plane operating with the aircraft carrier Nimitz off the coast of San Diego. The cockpit video show the F-18 following a UFO. The object being recorded is seemingly maneuvering in a manner not consistent with the capability of any known aircraft. In addition a link to a San Diego Union newspaper article about the video was added to the page. This is the best evidence yet from one of the most credible sources that ... we are not alone. the truth is out there!
+Data Cleaning
+The UFO data is provided by a JavaScript file that contains an array of data object with the following fields.
+•	Date
+•	City
+•	State
+•	Country
+•	Shape
+•	Duration
+•	Comments
 
-The UFO Finder webpage allows the user to filter the UFO data by specifying filter value for these fields
-* Date
-* City
-* State
-* Country
-* Shape
+The City, State, and Country fields are all lower case. Because of this, the data is cleaned when loaded into the webpage's main JavaScript file app.js. The City name components are all capitalized, and the State and Country field values are converted to upper case.
 
-Since these field have a finite set of unique values, the best approach to created a filter capability is to get the unique values of these field, sort them, and create multiselect control for each field and populate the select control option with the fields unique values. Textboxes could be used to enter the value for a field to filter on but this would require the user to possible scroll though the entire table to find the desired field value to filter on and the user would be limited to only filtering on one field value at time for each filter field. By using select control for each filter field populated with the field's unique values, can scroll though the unique value for a field listed iand select multiple values to filter on.
+## Data Filtering Using JavaScript
+The UFO Finder webpage allows the user to filter the UFO data by specifying filter values for these fields
+•	Date
+•	City
+•	State
+•	Country
+•	Shape
 
-In order to implement filtering the filter values have to be stored in JavaScript. A TableFilter class was created that contains an array property for each of the fields being filtered on. All of the the filter select controls are retrived using d3's sellectAll("seldct") method and then updateFilters function is attached to all the select controls using  d3's on("eventName", onChangeEventHandler) method. 
+Since these field have a finite set of unique values, the best approach filtering the data is to get the unique values of these field, sort them, and create a multiselect control for each field populated with the data field’s unique values. Textboxes could be used to enter filter value for each field to filter but this would require the user to scroll through the entire table to find the desired field value to filter on. In addition, the use would be limited to only specifying one filter value for each data field. By using a select control to filter each field the user can scroll though the unique value for a data field and select multiple values to filter on.
+In order to implement filtering, the filter values have to be stored in JavaScript. A TableFilter class was created that contains an array property to hold the filter values for each filter data field. An array is used because the data field’s multiselect filter control can return multiple values. The updateFilters(0 function is attached to all the select controls using d3's on("eventName", onChangeEventHandler) method.
 
-When a option is selected in any of the select control the updateFilter() function is executed. Using d3's d3.event.target object all the select controls options are iterated though to find the selected option which are stored in an array. The id of the select control that was changed is retrieved from the d3.event.target object. The updateFilter() method is called with the changed select control id and an the array of option values that are select to update the filter values for that data field. With the TableFilter object updated the filterTable() function is called and the data table is updated with rows that have field value that match filter values in the TableFilter object. 
+When a option is selected in any of the filter select controls, the updateFilter() function attached to the on change event of the select controls is executed. The function uses d3's d3.event.target object to access all the select controls select options, Then the data field name that the select control is filtering to is retrieved from the id property of the d3.event.target object. The Table filter’s update() method is called to update the data fields array of filter values with the currently selected option of that fields select control. Finally the updateTable() method is called to filter the table data and display this filtered data in the HTM table. 
 
-Multiple filter values can be selected in a field filter select control by used Ctrl-Click and any selected option in a filter select control can be unselected using Ctrl-Click. Each time a new option is selected or unselected the data in the table is updated by the on change event handler. In addition, a clear filter button is available to clear all the option selected in the filter select controls and to repopulated the table with complete UFO data set.
+
+Multiple filter values can be selected on a filter select control by used Ctrl-Click and any selected option in a filter select control can be unselected also by using Ctrl-Click.
