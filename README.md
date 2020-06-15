@@ -22,7 +22,7 @@ The UFO Finder webpage uses the Bootstrap [Grid](https://getbootstrap.com/docs/4
 
 Additional content was added to the page to enhance the UFO credibility of the information that is presented in the webpage. A YouTube video was added to the page. The video was recorded on Nov. 14, 2004 by a US Navy F18 Hornet plane operating off the aircraft carrier Nimitz off the coast of San Diego. It is a cockpit video of a F18 following a UFO. The recording shows the object seeming maneuvering in a manner not consistent with the capability of any known aircraft. Also, under the YouTube video, is a link to a The San Diego Union paper article about the video. This is the best evidence yet from one of the most credible sources that ... we are not alone. the truth is out there!
 
-## UFO Data 
+## Data Cleaning 
 The UFO data is provided by a Javascript file that contains an array of data object with the following fields. 
 * Date
 * City
@@ -34,7 +34,7 @@ The UFO data is provided by a Javascript file that contains an array of data obj
 
 The City, State, and Country fields are all lower case. Because of this, the data is iterated through and cleaned when loaded into the webpage's main JavaScript file app.js. The City name commponents are all capitalized and the State and Country field value are converted to upper case
 
-## UFO Data Filtering Using Javascript
+## Data Filtering Using Javascript
 
 The UFO Finder webpage allows the user to filter the UFO data by specifying filter value for these fields
 * Date
